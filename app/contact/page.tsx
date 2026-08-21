@@ -2,47 +2,47 @@ import Link from "next/link";
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-black px-6 py-16 text-white md:px-12">
+    <main className="min-h-screen overflow-x-hidden bg-black px-4 py-10 text-white sm:px-6 sm:py-16 md:px-12">
       <div className="mx-auto max-w-5xl">
 
         {/* Header */}
-        <div className="mb-16 flex items-center justify-between">
+        <div className="mb-12 flex items-center justify-between gap-4 sm:mb-16">
           <Link
             href="/"
-            className="text-xl font-bold tracking-[0.35em] transition hover:opacity-70"
+            className="shrink-0 text-base font-bold tracking-[0.25em] transition hover:opacity-70 sm:text-xl sm:tracking-[0.35em]"
           >
             ASCENDLAB
           </Link>
 
           <Link
             href="/"
-            className="rounded-full border border-gray-600 px-5 py-2 text-sm transition hover:bg-white hover:text-black"
+            className="shrink-0 rounded-full border border-gray-600 px-4 py-2 text-xs transition hover:bg-white hover:text-black sm:px-5 sm:text-sm"
           >
             Back Home
           </Link>
         </div>
 
         {/* Hero */}
-        <section className="mb-16 text-center">
-          <p className="mb-4 text-sm tracking-[0.45em] text-gray-400">
+        <section className="mb-12 text-center sm:mb-16">
+          <p className="mb-4 text-xs tracking-[0.35em] text-gray-400 sm:text-sm sm:tracking-[0.45em]">
             ASCENDLAB
           </p>
 
-          <h1 className="text-5xl font-black tracking-tight md:text-7xl">
+          <h1 className="text-4xl font-black tracking-tight sm:text-5xl md:text-7xl">
             CONTACT US
           </h1>
 
-          <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-gray-400">
+          <p className="mx-auto mt-6 max-w-2xl px-2 text-base leading-7 text-gray-400 sm:mt-8 sm:text-lg sm:leading-8">
             Have a question about an order, our products, or ASCENDLAB?
             We&apos;d love to hear from you.
           </p>
         </section>
 
         {/* Contact Cards */}
-        <section className="grid gap-8 md:grid-cols-2">
+        <section className="grid gap-6 md:grid-cols-2 md:gap-8">
 
           {/* Email */}
-          <div className="rounded-2xl bg-[#18181b] p-8 md:p-10">
+          <div className="rounded-2xl bg-[#18181b] p-6 sm:p-8 md:p-10">
             <h2 className="mb-4 text-2xl font-bold">
               Email Us
             </h2>
@@ -54,14 +54,14 @@ export default function ContactPage() {
 
             <a
               href="mailto:hello@ascendlab.com"
-              className="font-semibold text-[#e2b72f] transition hover:opacity-70"
+              className="break-all font-semibold text-[#e2b72f] transition hover:opacity-70"
             >
               hello@ascendlab.com
             </a>
           </div>
 
           {/* Support */}
-          <div className="rounded-2xl bg-[#18181b] p-8 md:p-10">
+          <div className="rounded-2xl bg-[#18181b] p-6 sm:p-8 md:p-10">
             <h2 className="mb-4 text-2xl font-bold">
               Customer Support
             </h2>
@@ -75,8 +75,8 @@ export default function ContactPage() {
         </section>
 
         {/* Contact Form */}
-        <section className="mt-12 rounded-2xl bg-[#18181b] p-8 md:p-12">
-          <h2 className="mb-8 text-3xl font-bold">
+        <section className="mt-8 rounded-2xl bg-[#18181b] p-6 sm:mt-12 sm:p-8 md:p-12">
+          <h2 className="mb-8 text-2xl font-bold sm:text-3xl">
             Send Us a Message
           </h2>
 
@@ -120,7 +120,7 @@ export default function ContactPage() {
 
             <button
               type="button"
-              className="rounded-md bg-[#e2b72f] px-8 py-4 font-bold text-black transition hover:opacity-80"
+              className="w-full rounded-md bg-[#e2b72f] px-8 py-4 font-bold text-black transition hover:opacity-80 sm:w-auto"
             >
               SEND MESSAGE
             </button>
@@ -129,8 +129,8 @@ export default function ContactPage() {
         </section>
 
         {/* CTA */}
-        <section className="mt-16 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">
+        <section className="mt-12 text-center sm:mt-16">
+          <h2 className="text-3xl font-bold sm:text-4xl">
             Ready to Ascend?
           </h2>
 
