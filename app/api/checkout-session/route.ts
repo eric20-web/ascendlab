@@ -24,7 +24,9 @@ export async function GET(request: Request) {
         const description =
           item.price?.product &&
           typeof item.price.product !== "string"
-            ? item.price.product.name
+            ? "name" in item.price.product
+              ? item.price.product.name
+              : item.description || "ASCENDLAB Black Hoodie"
             : item.description || "ASCENDLAB Black Hoodie";
 
         const sizeMatch = description.match(/Size\s+([A-Za-z0-9]+)/i);
