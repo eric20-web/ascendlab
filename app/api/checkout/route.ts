@@ -32,9 +32,10 @@ export async function POST(request: Request) {
       line_items: lineItems,
 
       success_url:
-        "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
+        "https://ascendlab.co.uk/success?session_id={CHECKOUT_SESSION_ID}",
 
-      cancel_url: "http://localhost:3000/cart",
+      cancel_url:
+        "https://ascendlab.co.uk/cart",
     });
 
     return NextResponse.json({
