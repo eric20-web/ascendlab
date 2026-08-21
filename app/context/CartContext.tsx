@@ -1,6 +1,11 @@
 "use client";
 
-import { createContext, useCallback, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 export const CartContext = createContext<any>(null);
 
@@ -10,6 +15,33 @@ export function CartProvider({
   children: React.ReactNode;
 }) {
   const [cart, setCart] = useState<any[]>([]);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load cart from localStorage when the app starts
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem("ascendlab-cart");
+
+      if (savedCart) {
+        setCart(JSON.parse(savedCart));
+      }
+    } catch (error) {
+      console.error("Failed to load cart:", error);
+    } finally {
+      setHydrated(true);
+    }
+  }, []);
+
+  // Save cart whenever it changes
+  useEffect(() => {
+    if (!hydrated) return;
+
+    try {
+      localStorage.setItem("ascendlab-cart", JSON.stringify(cart));
+    } catch (error) {
+      console.error("Failed to save cart:", error);
+    }
+  }, [cart, hydrated]);
 
   function addToCart(product: any) {
     setCart((currentCart) => {
