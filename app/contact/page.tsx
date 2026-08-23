@@ -1,6 +1,48 @@
+"use client";
+
 import Link from "next/link";
+import { FormEvent, useState } from "react";
 
 export default function ContactPage() {
+  const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setSending(true);
+    setSuccess(false);
+    setError("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(
+        "https://formspree.io/f/xrpzvrqd",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        setSuccess(true);
+        form.reset();
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Unable to send your message. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  }
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-black px-4 py-10 text-white sm:px-6 sm:py-16 md:px-12">
       <div className="mx-auto max-w-5xl">
@@ -53,14 +95,14 @@ export default function ContactPage() {
             </p>
 
             <a
-              href="mailto:hello@ascendlab.com"
+              href="mailto:ascendlab88@gmail.com"
               className="break-all font-semibold text-[#e2b72f] transition hover:opacity-70"
             >
-              hello@ascendlab.com
+              ascendlab88@gmail.com
             </a>
           </div>
 
-          {/* Support */}
+          {/* Customer Support */}
           <div className="rounded-2xl bg-[#18181b] p-6 sm:p-8 md:p-10">
             <h2 className="mb-4 text-2xl font-bold">
               Customer Support
@@ -80,49 +122,96 @@ export default function ContactPage() {
             Send Us a Message
           </h2>
 
-          <form className="space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+          >
 
+            {/* Success Message */}
+            {success && (
+              <div className="rounded-xl border border-green-500/40 bg-green-500/10 px-5 py-4 text-green-400">
+                <p className="text-lg font-bold">
+                  Message Sent Successfully! ✓
+                </p>
+
+                <p className="mt-1 text-sm">
+                  Thank you for contacting ASCENDLAB.
+                  We&apos;ll get back to you soon.
+                </p>
+              </div>
+            )}
+
+            {/* Error Message */}
+            {error && (
+              <div className="rounded-xl border border-red-500/40 bg-red-500/10 px-5 py-4 text-red-400">
+                {error}
+              </div>
+            )}
+
+            {/* Name */}
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label
+                htmlFor="name"
+                className="mb-2 block text-sm font-medium"
+              >
                 Name
               </label>
 
               <input
+                id="name"
+                name="name"
                 type="text"
                 placeholder="Your name"
+                required
                 className="w-full rounded-md border border-gray-700 bg-black px-4 py-3 text-white outline-none transition focus:border-[#e2b72f]"
               />
             </div>
 
+            {/* Email */}
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label
+                htmlFor="email"
+                className="mb-2 block text-sm font-medium"
+              >
                 Email
               </label>
 
               <input
+                id="email"
+                name="email"
                 type="email"
                 placeholder="your@email.com"
+                required
                 className="w-full rounded-md border border-gray-700 bg-black px-4 py-3 text-white outline-none transition focus:border-[#e2b72f]"
               />
             </div>
 
+            {/* Message */}
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label
+                htmlFor="message"
+                className="mb-2 block text-sm font-medium"
+              >
                 Message
               </label>
 
               <textarea
+                id="message"
+                name="message"
                 rows={6}
                 placeholder="How can we help?"
+                required
                 className="w-full resize-none rounded-md border border-gray-700 bg-black px-4 py-3 text-white outline-none transition focus:border-[#e2b72f]"
               />
             </div>
 
+            {/* Submit Button */}
             <button
-              type="button"
-              className="w-full rounded-md bg-[#e2b72f] px-8 py-4 font-bold text-black transition hover:opacity-80 sm:w-auto"
+              type="submit"
+              disabled={sending}
+              className="w-full rounded-md bg-[#e2b72f] px-8 py-4 font-bold text-black transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
-              SEND MESSAGE
+              {sending ? "SENDING..." : "SEND MESSAGE"}
             </button>
 
           </form>
