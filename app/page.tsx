@@ -44,6 +44,35 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Lifestyle */}
+      <section className="px-6 py-20 md:px-12">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 text-center">
+            <p className="text-sm tracking-[0.3em] text-gray-400">
+              THE ASCENDLAB MINDSET
+            </p>
+
+            <h2 className="mt-3 text-4xl font-bold md:text-5xl">
+              WEAR THE VISION.
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-2xl text-gray-400">
+              Built for the next generation. Premium comfort, confidence
+              and a mindset of always moving forward.
+            </p>
+          </div>
+
+          {/* Daughter wearing ASCENDLAB hoodie */}
+          <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl">
+            <img
+              src="/images/ascendlab-daughter-hoodie.jpg"
+              alt="ASCENDLAB hoodie"
+              className="h-[500px] w-full object-cover object-center md:h-[600px]"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Product */}
       <section className="px-6 py-20 md:px-12">
         <div className="mb-12 text-center">
