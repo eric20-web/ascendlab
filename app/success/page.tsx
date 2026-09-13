@@ -24,13 +24,13 @@ function SuccessContent() {
   const [total, setTotal] = useState<number | null>(null);
   const [items, setItems] = useState<OrderItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const sessionId = searchParams.get("session_id");
 
     if (!sessionId) {
       setTotal(44.99);
-
       setItems([
         {
           name: "ASCENDLAB Black Hoodie",
@@ -39,7 +39,6 @@ function SuccessContent() {
           price: 44.99,
         },
       ]);
-
       clearCart();
       setLoading(false);
       return;
@@ -48,22 +47,30 @@ function SuccessContent() {
     async function getOrder() {
       try {
         const response = await fetch(
-          `/api/checkout-session?session_id=${sessionId}`
+          `/api/checkout-session?session_id=${encodeURIComponent(sessionId)}`,
+          {
+            cache: "no-store",
+          }
         );
 
         const data = await response.json();
 
-        if (response.ok) {
-          if (typeof data.total === "number") {
-            setTotal(data.total / 100);
-          }
+        console.log("Checkout session response:", data);
 
-          if (Array.isArray(data.items)) {
-            setItems(data.items);
-          }
+        if (!response.ok) {
+          throw new Error(data.error || "Unable to load order");
+        }
+
+        if (typeof data.total === "number") {
+          setTotal(data.total / 100);
+        }
+
+        if (Array.isArray(data.items)) {
+          setItems(data.items);
         }
       } catch (error) {
         console.error("Failed to load order:", error);
+        setError("We couldn't load your order details.");
       } finally {
         clearCart();
         setLoading(false);
@@ -110,6 +117,10 @@ function SuccessContent() {
             <p className="text-gray-400">
               Loading order details...
             </p>
+          ) : error ? (
+            <p className="text-gray-400">
+              {error}
+            </p>
           ) : items.length > 0 ? (
             <div className="space-y-5">
               {items.map((item, index) => (
@@ -154,6 +165,8 @@ function SuccessContent() {
             <span className="text-2xl font-bold">
               {total !== null
                 ? `£${total.toFixed(2)}`
+                : error
+                ? "£44.99"
                 : "Loading..."}
             </span>
           </div>
