@@ -22,8 +22,8 @@ export default function CartPage() {
   );
 
   return (
-    <main className="min-h-screen bg-black px-4 py-8 text-white sm:p-10">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen w-full overflow-x-hidden bg-black px-4 py-8 text-white sm:p-10">
+      <div className="mx-auto w-full max-w-6xl">
         <h1 className="mb-8 text-4xl font-bold sm:text-5xl">
           Your Cart
         </h1>
@@ -37,7 +37,7 @@ export default function CartPage() {
             {cart.map((item: any, index: number) => (
               <div
                 key={index}
-                className="rounded-xl bg-zinc-900 p-4 sm:p-6"
+                className="w-full overflow-hidden rounded-xl bg-zinc-900 p-4 sm:p-6"
               >
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                   
@@ -48,11 +48,11 @@ export default function CartPage() {
                       alt={item.name}
                       width={160}
                       height={160}
-                      className="h-28 w-28 shrink-0 rounded-xl object-cover sm:h-40 sm:w-40"
+                      className="h-24 w-24 shrink-0 rounded-xl object-cover sm:h-40 sm:w-40"
                     />
 
                     <div className="min-w-0 flex-1">
-                      <h2 className="break-words text-xl font-bold sm:text-2xl">
+                      <h2 className="break-words text-lg font-bold sm:text-2xl">
                         {item.name}
                       </h2>
 
@@ -61,25 +61,25 @@ export default function CartPage() {
                       </p>
 
                       <p className="mt-2 text-gray-400">
-                        £{item.price}
+                        £{Number(item.price).toFixed(2)}
                       </p>
 
                       {/* Quantity */}
                       <div className="mt-4 flex items-center gap-3">
                         <button
                           onClick={() => decreaseQuantity(index)}
-                          className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-xl hover:bg-zinc-700"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xl hover:bg-zinc-700"
                         >
                           −
                         </button>
 
-                        <span className="text-lg font-bold">
+                        <span className="min-w-[20px] text-center text-lg font-bold">
                           {item.quantity || 1}
                         </span>
 
                         <button
                           onClick={() => increaseQuantity(index)}
-                          className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-xl hover:bg-zinc-700"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xl hover:bg-zinc-700"
                         >
                           +
                         </button>
@@ -90,7 +90,7 @@ export default function CartPage() {
                   {/* Remove */}
                   <button
                     onClick={() => removeFromCart(index)}
-                    className="w-full rounded-lg bg-red-600 px-4 py-3 font-bold text-white transition hover:bg-red-700 sm:w-auto"
+                    className="w-full shrink-0 rounded-lg bg-red-600 px-4 py-3 font-bold text-white transition hover:bg-red-700 sm:w-auto"
                   >
                     Remove
                   </button>
@@ -99,10 +99,12 @@ export default function CartPage() {
             ))}
 
             {/* Total */}
-            <div className="border-t border-zinc-700 pt-6">
-              <div className="mb-6 flex items-center justify-between text-2xl font-bold">
+            <div className="w-full border-t border-zinc-700 pt-6">
+              <div className="mb-6 flex w-full flex-col gap-2 text-2xl font-bold sm:flex-row sm:items-center sm:justify-between">
                 <span>Total</span>
-                <span>£{total.toFixed(2)}</span>
+                <span className="break-words">
+                  £{total.toFixed(2)}
+                </span>
               </div>
 
               <button
