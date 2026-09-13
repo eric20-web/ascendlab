@@ -93,6 +93,33 @@ export default function AboutPage() {
 
         </section>
 
+        {/* Footer */}
+        <footer className="mt-24 border-t border-white/10 pt-8 text-center">
+          <p className="text-sm font-semibold tracking-[0.3em]">
+            ASCENDLAB
+          </p>
+
+          <div className="mt-4 flex justify-center gap-6 text-sm text-gray-400">
+            <Link
+              href="/shop"
+              className="transition hover:text-white"
+            >
+              Shop
+            </Link>
+
+            <Link
+              href="/contact"
+              className="transition hover:text-white"
+            >
+              Contact
+            </Link>
+          </div>
+
+          <p className="mt-6 text-xs text-gray-500">
+            © 2026 ASCENDLAB. All rights reserved.
+          </p>
+        </footer>
+
       </div>
     </main>
   );
