@@ -21,35 +21,40 @@ export async function GET(request: Request) {
       );
     }
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ["line_items.data.price.product"],
+    // Get the checkout session
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    // Get the items separately
+    const lineItems = await stripe.checkout.sessions.listLineItems(
+      sessionId,
+      {
+        expand: ["data.price.product"],
+      }
+    );
+
+    const items = lineItems.data.map((item) => {
+      const product =
+        item.price?.product &&
+        typeof item.price.product !== "string"
+          ? item.price.product
+          : null;
+
+      const productName =
+        product && "name" in product
+          ? product.name
+          : item.description || "ASCENDLAB Black Hoodie";
+
+      const description = item.description || "";
+
+      const sizeMatch = description.match(/Size\s*[:\-]?\s*([A-Za-z0-9]+)/i);
+
+      return {
+        name: productName,
+        size: sizeMatch ? sizeMatch[1] : "M",
+        quantity: item.quantity || 1,
+        price: (item.price?.unit_amount || 0) / 100,
+      };
     });
-
-    const items =
-      session.line_items?.data.map((item) => {
-        const product =
-          item.price?.product &&
-          typeof item.price.product !== "string"
-            ? item.price.product
-            : null;
-
-        const description =
-          product && "name" in product
-            ? product.name
-            : item.description || "ASCENDLAB Black Hoodie";
-
-        const sizeMatch = description.match(/Size\s+([A-Za-z0-9]+)/i);
-
-        return {
-          name: description.replace(
-            /\s*-\s*Size\s+[A-Za-z0-9]+/i,
-            ""
-          ),
-          size: sizeMatch ? sizeMatch[1] : "M",
-          quantity: item.quantity || 1,
-          price: (item.price?.unit_amount || 0) / 100,
-        };
-      }) || [];
 
     return NextResponse.json({
       total: session.amount_total,
