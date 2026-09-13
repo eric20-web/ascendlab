@@ -61,15 +61,6 @@ export default function Home() {
               and a mindset of always moving forward.
             </p>
           </div>
-
-          {/* Daughter wearing ASCENDLAB hoodie */}
-          <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl">
-            <img
-              src="/images/ascendlab-daughter-hoodie.jpg"
-              alt="ASCENDLAB hoodie"
-              className="h-[500px] w-full object-cover object-center md:h-[600px]"
-            />
-          </div>
         </div>
       </section>
 
