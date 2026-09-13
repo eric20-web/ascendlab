@@ -31,6 +31,7 @@ function SuccessContent() {
 
     if (!sessionId) {
       setTotal(44.99);
+
       setItems([
         {
           name: "ASCENDLAB Black Hoodie",
@@ -39,15 +40,21 @@ function SuccessContent() {
           price: 44.99,
         },
       ]);
+
       clearCart();
       setLoading(false);
       return;
     }
 
+    // TypeScript now knows this is definitely a string
+    const validSessionId = sessionId;
+
     async function getOrder() {
       try {
         const response = await fetch(
-          `/api/checkout-session?session_id=${encodeURIComponent(sessionId)}`,
+          `/api/checkout-session?session_id=${encodeURIComponent(
+            validSessionId
+          )}`,
           {
             cache: "no-store",
           }
@@ -58,7 +65,9 @@ function SuccessContent() {
         console.log("Checkout session response:", data);
 
         if (!response.ok) {
-          throw new Error(data.error || "Unable to load order");
+          throw new Error(
+            data.error || "Unable to load order"
+          );
         }
 
         if (typeof data.total === "number") {
@@ -70,7 +79,9 @@ function SuccessContent() {
         }
       } catch (error) {
         console.error("Failed to load order:", error);
-        setError("We couldn't load your order details.");
+        setError(
+          "We couldn't load your order details."
+        );
       } finally {
         clearCart();
         setLoading(false);
