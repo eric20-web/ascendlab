@@ -231,6 +231,33 @@ export default function ContactPage() {
           </Link>
         </section>
 
+        {/* Footer */}
+        <footer className="mt-20 border-t border-white/10 pt-8 text-center sm:mt-24">
+          <p className="text-sm font-semibold tracking-[0.3em]">
+            ASCENDLAB
+          </p>
+
+          <div className="mt-4 flex justify-center gap-6 text-sm text-gray-400">
+            <Link
+              href="/shop"
+              className="transition hover:text-white"
+            >
+              Shop
+            </Link>
+
+            <Link
+              href="/about"
+              className="transition hover:text-white"
+            >
+              About
+            </Link>
+          </div>
+
+          <p className="mt-6 text-xs text-gray-500">
+            © 2026 ASCENDLAB. All rights reserved.
+          </p>
+        </footer>
+
       </div>
     </main>
   );
