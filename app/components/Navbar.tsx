@@ -16,15 +16,16 @@ export default function Navbar() {
           className="transition hover:opacity-80"
           onClick={() => setMenuOpen(false)}
         >
-          <Image
-            src="/images/ascendlab-logo.png"
-            alt="ASCENDLAB"
-            width={160}
-            height={107}
-            priority
-            className="w-32 md:w-40"
-            style={{ height: "auto" }}
-          />
+          <div className="relative aspect-[160/107] w-32 md:w-40">
+            <Image
+              src="/images/ascendlab-logo.png"
+              alt="ASCENDLAB"
+              fill
+              sizes="(max-width: 768px) 128px, 160px"
+              className="object-contain"
+              priority
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
