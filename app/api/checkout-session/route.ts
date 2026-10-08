@@ -21,32 +21,23 @@ export async function GET(request: Request) {
       );
     }
 
-    // Get the checkout session
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    // Get the items separately
     const lineItems = await stripe.checkout.sessions.listLineItems(
-      sessionId,
-      {
-        expand: ["data.price.product"],
-      }
+      sessionId
     );
 
     const items = lineItems.data.map((item) => {
-      const product =
-        item.price?.product &&
-        typeof item.price.product !== "string"
-          ? item.price.product
-          : null;
-
-      const productName =
-        product && "name" in product
-          ? product.name
-          : item.description || "ASCENDLAB Black Hoodie";
-
       const description = item.description || "";
 
-      const sizeMatch = description.match(/Size\s*[:\-]?\s*([A-Za-z0-9]+)/i);
+      const sizeMatch = description.match(
+        /Size\s*[-:]?\s*([A-Za-z0-9]+)/i
+      );
+
+      const productName =
+       description
+    .replace(/\s*-\s*Size\s*[A-Za-z0-9]+$/i, "")
+    .trim() || "ASCENDLAB Black Hoodie";
 
       return {
         name: productName,
@@ -63,17 +54,7 @@ export async function GET(request: Request) {
       items,
     });
   } catch (error) {
-    console.error("========== CHECKOUT SESSION ERROR ==========");
-
-    if (error instanceof Stripe.errors.StripeError) {
-      console.error("Message:", error.message);
-      console.error("Code:", error.code);
-      console.error("Type:", error.type);
-    } else {
-      console.error(error);
-    }
-
-    console.error("============================================");
+    console.error("CHECKOUT SESSION ERROR:", error);
 
     return NextResponse.json(
       {
