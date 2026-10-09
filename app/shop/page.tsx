@@ -158,7 +158,12 @@ export default function ShopPage() {
 >
   Returns & Refunds
 </Link>
-
+<Link
+  href="/privacy"
+  className="transition hover:text-white"
+>
+  Privacy Policy
+</Link>
           </div>
 
           <p className="mt-6 text-xs text-gray-500">
