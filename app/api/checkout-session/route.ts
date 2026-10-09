@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -8,30 +9,45 @@ if (!secretKey) {
 }
 
 const stripe = new Stripe(secretKey);
+const expectedLiveMode = secretKey.startsWith("sk_live_");
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const sessionId = searchParams.get("session_id");
 
-    if (!sessionId) {
+    if (!sessionId || !sessionId.startsWith("cs_")) {
       return NextResponse.json(
-        { error: "Missing session_id" },
+        { error: "Invalid checkout session" },
         { status: 400 }
       );
     }
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-    if (session.payment_status !== "paid") {
-  return NextResponse.json(
-    { error: "Payment has not been completed" },
-    { status: 400 }
-  );
-}
+    const session =
+      await stripe.checkout.sessions.retrieve(sessionId);
 
-    const lineItems = await stripe.checkout.sessions.listLineItems(
-      sessionId
-    );
+    // Ensure the session matches this site's Stripe mode.
+    if (session.livemode !== expectedLiveMode) {
+      return NextResponse.json(
+        { error: "Unable to verify this order" },
+        { status: 400 }
+      );
+    }
+
+    // Confirm this is a paid, GBP payment checkout.
+    if (
+      session.mode !== "payment" ||
+      session.payment_status !== "paid" ||
+      session.currency !== "gbp"
+    ) {
+      return NextResponse.json(
+        { error: "Payment has not been confirmed" },
+        { status: 400 }
+      );
+    }
+
+    const lineItems =
+      await stripe.checkout.sessions.listLineItems(sessionId);
 
     const items = lineItems.data.map((item) => {
       const description = item.description || "";
@@ -40,16 +56,16 @@ export async function GET(request: Request) {
         /Size\s*[-:]?\s*([A-Za-z0-9]+)/i
       );
 
-      const productName =
-       description
-    .replace(/\s*-\s*Size\s*[A-Za-z0-9]+$/i, "")
-    .trim() || "ASCENDLAB Black Hoodie";
+      const name =
+        description
+          .replace(/\s*-\s*Size\s*[A-Za-z0-9]+$/i, "")
+          .trim() || "ASCENDLAB Black Hoodie";
 
       return {
-        name: productName,
+        name,
         size: sizeMatch ? sizeMatch[1] : "Unknown",
         quantity: item.quantity || 1,
-        price: (item.price?.unit_amount || 0) / 100,
+        price: (item.price?.unit_amount ?? 0) / 100,
       };
     });
 
@@ -60,14 +76,13 @@ export async function GET(request: Request) {
       items,
     });
   } catch (error) {
+    // Keep detailed errors in server logs, not in customer responses.
     console.error("CHECKOUT SESSION ERROR:", error);
 
     return NextResponse.json(
       {
         error:
-          error instanceof Error
-            ? error.message
-            : "Unable to retrieve checkout session",
+          "Unable to verify your order. Please contact ASCENDLAB.",
       },
       { status: 500 }
     );
