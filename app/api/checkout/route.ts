@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -21,50 +22,44 @@ export async function POST(request: Request) {
       );
     }
 
-    const lineItems = cart.map((item: any) => ({
-      price_data: {
-        currency: "gbp",
-        product_data: {
-          name: `${item.name} - Size ${item.selectedSize || "N/A"}`,
+    const lineItems = cart.map((item: any) => {
+      const price = Number(item.price);
+      const quantity = Number(item.quantity) || 1;
+
+      if (!Number.isFinite(price) || price <= 0) {
+        throw new Error("Invalid product price");
+      }
+
+      return {
+        price_data: {
+          currency: "gbp",
+          product_data: {
+            name: `${item.name} - Size ${item.selectedSize || "N/A"}`,
+          },
+          unit_amount: Math.round(price * 100),
         },
-        unit_amount: Math.round(Number(item.price) * 100),
-      },
-      quantity: Number(item.quantity) || 1,
-    }));
+        quantity,
+      };
+    });
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: lineItems,
-
       success_url:
         "https://ascendlab.co.uk/success?session_id={CHECKOUT_SESSION_ID}",
-
-      cancel_url:
-        "https://ascendlab.co.uk/cart",
+      cancel_url: "https://ascendlab.co.uk/cart",
     });
 
-    return NextResponse.json({
-      url: session.url,
-    });
+    return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error("========== STRIPE ERROR ==========");
-
-    if (error instanceof Stripe.errors.StripeError) {
-      console.error("Message:", error.message);
-      console.error("Code:", error.code);
-      console.error("Type:", error.type);
-    } else {
-      console.error(error);
-    }
-
-    console.error("==================================");
+    console.error("STRIPE CHECKOUT ERROR:", error);
 
     return NextResponse.json(
       {
         error:
           error instanceof Error
             ? error.message
-            : "Stripe session failed",
+            : "Stripe checkout failed",
       },
       { status: 500 }
     );
