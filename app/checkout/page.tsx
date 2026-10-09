@@ -16,7 +16,13 @@ export default function CheckoutPage() {
       sum + Number(item.price) * (Number(item.quantity) || 1),
     0
   );
+const totalHoodies = cart.reduce(
+  (sum: number, item: any) =>
+    sum + (Number(item.quantity) || 1),
+  0
+);
 
+const requiresDeliveryQuote = totalHoodies >= 3;
   async function handleCheckout() {
     setError("");
 
@@ -127,12 +133,20 @@ export default function CheckoutPage() {
           )}
 
           <button
-            onClick={handleCheckout}
-            disabled={loading}
-            className="mt-8 w-full rounded-full bg-white py-4 font-bold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? "Starting checkout..." : "Proceed to Payment"}
-          </button>
+  onClick={() =>
+    requiresDeliveryQuote
+      ? router.push("/contact")
+      : handleCheckout()
+  }
+  disabled={loading && !requiresDeliveryQuote}
+  className="mt-8 w-full rounded-full bg-white py-4 font-bold text-black transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-60"
+>
+  {loading
+    ? "Starting checkout..."
+    : requiresDeliveryQuote
+      ? "Contact for Delivery Quote"
+      : "Proceed to Payment"}
+</button>
 
           <button
             onClick={() => router.push("/cart")}
