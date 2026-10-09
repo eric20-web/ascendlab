@@ -47,7 +47,7 @@ export async function GET(request: Request) {
 
       return {
         name: productName,
-        size: sizeMatch ? sizeMatch[1] : "M",
+        size: sizeMatch ? sizeMatch[1] : "Unknown",
         quantity: item.quantity || 1,
         price: (item.price?.unit_amount || 0) / 100,
       };
