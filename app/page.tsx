@@ -168,11 +168,11 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/cart"
-            className="transition hover:text-white"
-          >
-            Cart
-          </Link>
+  href="/shipping"
+  className="transition hover:text-white"
+>
+  Delivery
+</Link>
         </div>
 
         <p className="mt-6 text-xs text-gray-500">

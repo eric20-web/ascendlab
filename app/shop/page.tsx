@@ -146,6 +146,12 @@ export default function ShopPage() {
             >
               Cart
             </Link>
+            <Link
+  href="/shipping"
+  className="transition hover:text-white"
+>
+  Delivery
+</Link>
           </div>
 
           <p className="mt-6 text-xs text-gray-500">
