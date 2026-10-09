@@ -145,35 +145,27 @@ export default function Home() {
           ASCENDLAB
         </p>
 
-        <div className="mt-4 flex justify-center gap-6 text-sm text-gray-400">
-          <Link
-            href="/shop"
-            className="transition hover:text-white"
-          >
-            Shop
-          </Link>
+       <div className="mt-4 flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+  <Link href="/shop" className="transition hover:text-white">
+    Shop
+  </Link>
 
-          <Link
-            href="/about"
-            className="transition hover:text-white"
-          >
-            About
-          </Link>
+  <Link href="/about" className="transition hover:text-white">
+    About
+  </Link>
 
-          <Link
-            href="/contact"
-            className="transition hover:text-white"
-          >
-            Contact
-          </Link>
+  <Link href="/contact" className="transition hover:text-white">
+    Contact
+  </Link>
 
-          <Link
-  href="/shipping"
-  className="transition hover:text-white"
->
-  Delivery
-</Link>
-        </div>
+  <Link href="/cart" className="transition hover:text-white">
+    Cart
+  </Link>
+
+  <Link href="/shipping" className="transition hover:text-white">
+    Delivery
+  </Link>
+</div>
 
         <p className="mt-6 text-xs text-gray-500">
           © 2026 ASCENDLAB. All rights reserved.
