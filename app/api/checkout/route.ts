@@ -3,6 +3,14 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const secretKey = process.env.STRIPE_SECRET_KEY;
+console.log(
+  "STRIPE MODE:",
+  secretKey?.startsWith("sk_live_")
+    ? "LIVE"
+    : secretKey?.startsWith("sk_test_")
+      ? "TEST"
+      : "UNKNOWN"
+);
 
 if (!secretKey) {
   throw new Error("STRIPE_SECRET_KEY is not defined");
