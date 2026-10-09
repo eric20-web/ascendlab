@@ -165,6 +165,12 @@ export default function Home() {
   <Link href="/shipping" className="transition hover:text-white">
     Delivery
   </Link>
+  <Link
+  href="/returns"
+  className="transition hover:text-white"
+>
+  Returns & Refunds
+</Link>
 </div>
 
         <p className="mt-6 text-xs text-gray-500">
