@@ -27,15 +27,38 @@ export default function ProductPage() {
         {/* Product */}
         <div className="grid gap-10 md:grid-cols-2 md:gap-16">
 
-          {/* Product Image */}
-          <div>
-            <Image
-              src="/images/ascend-hoodie.jpeg"
-              alt={product.name}
-              width={700}
-              height={700}
-              className="w-full rounded-2xl object-cover"
-            />
+                    {/* Front and Back Product Images */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {/* Front View */}
+            <div>
+              <Image
+                src="/images/ascend-hoodie-front.jpeg"
+                alt="Front view of ASCENDLAB Black Hoodie"
+                width={700}
+                height={900}
+                sizes="(max-width: 1024px) 100vw, 25vw"
+                priority
+                className="aspect-[3/4] w-full rounded-2xl object-cover"
+              />
+              <p className="mt-3 text-center text-xs tracking-[0.25em] text-gray-400">
+                FRONT VIEW
+              </p>
+            </div>
+
+            {/* Back View */}
+            <div>
+              <Image
+                src="/images/ascend-hoodie.jpeg"
+                alt="Back view of ASCENDLAB Black Hoodie with gold logo"
+                width={700}
+                height={900}
+                sizes="(max-width: 1024px) 100vw, 25vw"
+                className="aspect-[3/4] w-full rounded-2xl object-cover"
+              />
+              <p className="mt-3 text-center text-xs tracking-[0.25em] text-gray-400">
+                BACK VIEW
+              </p>
+            </div>
           </div>
 
           {/* Product Details */}
