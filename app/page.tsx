@@ -171,6 +171,13 @@ export default function Home() {
 >
   Returns & Refunds
 </Link>
+<Link href="/privacy" className="transition hover:text-white">
+  Privacy Policy
+</Link>
+
+<Link href="/terms" className="transition hover:text-white">
+  Terms & Conditions
+</Link>
 </div>
 
         <p className="mt-6 text-xs text-gray-500">

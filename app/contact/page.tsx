@@ -116,6 +116,31 @@ export default function ContactPage() {
 
         </section>
 
+        {/* Business Details */}
+        <section className="mt-8 rounded-2xl bg-[#18181b] p-6 sm:p-8 md:p-10">
+          <h2 className="mb-4 text-2xl font-bold">
+            Business Details
+          </h2>
+
+          <p className="leading-7 text-gray-400">
+            ASCENDLAB is the trading name of [Igbinakenzua Osagbokan Eric],
+            a sole trader.
+          </p>
+
+          <address className="mt-4 whitespace-pre-line not-italic leading-7 text-gray-400">
+            [37 Oban Road, L4 2SA]
+          </address>
+
+          <p className="mt-4 text-gray-400">
+            Email:{" "}
+            <a
+              href="mailto:ascendlab88@gmail.com"
+              className="text-[#e2b72f] hover:opacity-70"
+            >
+              ascendlab88@gmail.com
+            </a>
+          </p>
+        </section>
         {/* Contact Form */}
         <section className="mt-8 rounded-2xl bg-[#18181b] p-6 sm:mt-12 sm:p-8 md:p-12">
           <h2 className="mb-8 text-2xl font-bold sm:text-3xl">
