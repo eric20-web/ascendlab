@@ -164,6 +164,12 @@ export default function ShopPage() {
 >
   Privacy Policy
 </Link>
+<Link
+  href="/terms"
+  className="transition hover:text-white"
+>
+  Terms & Conditions
+</Link>
           </div>
 
           <p className="mt-6 text-xs text-gray-500">
