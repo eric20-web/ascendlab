@@ -12,10 +12,15 @@ const stripe = new Stripe(secretKey);
 
 const HOODIE_PRICE_PENCE = 4499;
 const UK_SHIPPING_PENCE = 0;
-const EUROPE_SHIPPING_PENCE = 1299;
-const AFRICA_SHIPPING_PENCE = 1499;
 
-const ALLOWED_SIZES = new Set(["XS", "S", "M", "L", "XL", "XXL"]);
+const ALLOWED_SIZES = new Set([
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL",
+]);
 
 type CartItem = {
   quantity?: unknown;
@@ -23,41 +28,24 @@ type CartItem = {
   size?: unknown;
 };
 
-const EUROPE_COUNTRIES = [
-  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE",
-  "FI", "FR", "DE", "GR", "HU", "IS", "IE", "IT",
-  "LV", "LI", "LT", "LU", "MT", "NL", "NO", "PL",
-  "PT", "RO", "SK", "SI", "ES", "SE", "CH"
-] as const;
-
-const AFRICA_COUNTRIES = [
-  "DZ", "AO", "BJ", "BW", "BF", "BI", "CV", "CM",
-  "CF", "TD", "KM", "CG", "CD", "CI", "DJ", "EG",
-  "GQ", "ER", "SZ", "ET", "GA", "GM", "GH", "GN",
-  "GW", "KE", "LS", "LR", "LY", "MG", "MW", "ML",
-  "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RW",
-  "ST", "SN", "SC", "SL", "SO", "ZA", "SS", "SD",
-  "TZ", "TG", "TN", "UG", "ZM", "ZW"
-] as const;
-
-const ALLOWED_COUNTRIES = new Set<string>([
-  "GB",
-  ...EUROPE_COUNTRIES,
-  ...AFRICA_COUNTRIES
-]);
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const cart = body?.cart;
+
     const country =
       typeof body?.country === "string"
         ? body.country.toUpperCase()
         : "";
 
-    if (!ALLOWED_COUNTRIES.has(country)) {
+    // Keep international checkout disabled until
+    // tracked postage costs have been confirmed.
+    if (country !== "GB") {
       return NextResponse.json(
-        { error: "Please select a supported delivery country." },
+        {
+          error:
+            "International delivery is temporarily unavailable while we confirm tracked postage costs. Please select United Kingdom.",
+        },
         { status: 400 }
       );
     }
@@ -69,24 +57,36 @@ export async function POST(request: Request) {
       );
     }
 
-    const validatedItems: { size: string; quantity: number }[] = [];
+    const validatedItems: {
+      size: string;
+      quantity: number;
+    }[] = [];
+
     let totalHoodies = 0;
 
     for (const item of cart as CartItem[]) {
       const size = String(
         item.selectedSize ?? item.size ?? ""
-      ).trim().toUpperCase();
+      )
+        .trim()
+        .toUpperCase();
 
       const quantity = Number(item.quantity ?? 1);
 
       if (!ALLOWED_SIZES.has(size)) {
         return NextResponse.json(
-          { error: "Please select a valid hoodie size for every item." },
+          {
+            error:
+              "Please select a valid hoodie size for every item.",
+          },
           { status: 400 }
         );
       }
 
-      if (!Number.isInteger(quantity) || quantity < 1) {
+      if (
+        !Number.isInteger(quantity) ||
+        quantity < 1
+      ) {
         return NextResponse.json(
           { error: "Invalid item quantity." },
           { status: 400 }
@@ -97,11 +97,11 @@ export async function POST(request: Request) {
       validatedItems.push({ size, quantity });
     }
 
-    if (totalHoodies > 2) {
+    if (totalHoodies >= 3) {
       return NextResponse.json(
         {
           error:
-            "For orders of 3 or more hoodies, please contact ASCENDLAB for a delivery quote."
+            "For orders of 3 or more hoodies, please contact ASCENDLAB for a delivery quote.",
         },
         { status: 400 }
       );
@@ -112,38 +112,19 @@ export async function POST(request: Request) {
         price_data: {
           currency: "gbp",
           product_data: {
-            name: `ASCENDLAB Black Hoodie - Size ${item.size}`
+            name: `ASCENDLAB Black Hoodie - Size ${item.size}`,
           },
-          unit_amount: HOODIE_PRICE_PENCE
+          unit_amount: HOODIE_PRICE_PENCE,
         },
-        quantity: item.quantity
+        quantity: item.quantity,
       }));
-
-    const isUK = country === "GB";
-    const isEurope = (
-      EUROPE_COUNTRIES as readonly string[]
-    ).includes(country);
-
-    const shippingAmount = isUK
-      ? UK_SHIPPING_PENCE
-      : isEurope
-        ? EUROPE_SHIPPING_PENCE
-        : AFRICA_SHIPPING_PENCE;
-
-    const shippingName = isUK
-      ? "Free UK delivery"
-      : isEurope
-        ? "Europe delivery"
-        : "Africa delivery";
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: lineItems,
 
       shipping_address_collection: {
-        allowed_countries: [
-          country as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry
-        ]
+        allowed_countries: ["GB"],
       },
 
       shipping_options: [
@@ -151,26 +132,28 @@ export async function POST(request: Request) {
           shipping_rate_data: {
             type: "fixed_amount",
             fixed_amount: {
-              amount: shippingAmount,
-              currency: "gbp"
+              amount: UK_SHIPPING_PENCE,
+              currency: "gbp",
             },
-            display_name: shippingName,
-            delivery_estimate: isUK
-              ? {
-                  minimum: { unit: "business_day", value: 2 },
-                  maximum: { unit: "business_day", value: 5 }
-                }
-              : {
-                  minimum: { unit: "business_day", value: 5 },
-                  maximum: { unit: "business_day", value: 15 }
-                }
-          }
-        }
+            display_name: "Free UK delivery",
+            delivery_estimate: {
+              minimum: {
+                unit: "business_day",
+                value: 2,
+              },
+              maximum: {
+                unit: "business_day",
+                value: 5,
+              },
+            },
+          },
+        },
       ],
 
       success_url:
         "https://ascendlab.co.uk/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "https://ascendlab.co.uk/cart"
+
+      cancel_url: "https://ascendlab.co.uk/cart",
     });
 
     return NextResponse.json({ url: session.url });
@@ -178,7 +161,10 @@ export async function POST(request: Request) {
     console.error("STRIPE CHECKOUT ERROR:", error);
 
     return NextResponse.json(
-      { error: "Unable to start checkout. Please try again." },
+      {
+        error:
+          "Unable to start checkout. Please try again.",
+      },
       { status: 500 }
     );
   }
