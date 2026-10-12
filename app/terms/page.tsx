@@ -21,7 +21,7 @@ export default function TermsPage() {
         </h1>
 
         <p className="mt-3 text-sm text-gray-500">
-          Last updated: 10 October 2026
+          Last updated: 12 October 2026
         </p>
 
         <p className="mt-6 leading-7 text-gray-300">
@@ -60,9 +60,11 @@ export default function TermsPage() {
             <p className="mt-3 leading-7 text-gray-400">
               The listed price of the ASCENDLAB Black Hoodie is
               £44.99 per item. Prices are displayed in pounds
-              sterling. Applicable delivery charges are shown
-              before payment, and the final total is shown at
-              Stripe Checkout before you pay.
+              sterling. Standard delivery within the United
+              Kingdom is currently free on all orders. Any
+              applicable charges will be shown before payment,
+              and the final total is displayed at Stripe
+              Checkout before you pay.
             </p>
             <p className="mt-3 leading-7 text-gray-400">
               Payments are processed through Stripe Checkout.
@@ -87,18 +89,25 @@ export default function TermsPage() {
           <div>
             <h2 className="text-xl font-bold">5. Delivery</h2>
             <p className="mt-3 leading-7 text-gray-400">
-              Current UK standard delivery charges are £6.99
-              for one hoodie and £10.99 for two hoodies.
-              Orders for three or more hoodies require a
-              delivery quote before payment can be arranged.
+              Standard delivery within the United Kingdom is
+              currently free on all orders. Orders of three
+              or more hoodies may require us to confirm the
+              delivery arrangements before accepting the order.
             </p>
             <p className="mt-3 leading-7 text-gray-400">
-              Delivery estimates depend on the service selected
-              and when an order is dispatched. We will provide
-              available tracking information after dispatch.
-              We will communicate with you if a delivery issue
+              Our current estimated UK delivery time is 2–5
+              business days after dispatch. Delivery estimates
+              are not guaranteed dates. We will provide
+              available tracking information after dispatch
+              and communicate with you if a delivery issue
               affects your order. Your legal rights concerning
               delivery delays and non-delivery remain unaffected.
+            </p>
+            <p className="mt-3 leading-7 text-gray-400">
+              International orders will only be accepted when
+              delivery to the selected destination is available
+              and the applicable delivery charges have been
+              confirmed at checkout.
             </p>
             <Link
               href="/shipping"

@@ -30,30 +30,35 @@ export default function ShippingPage() {
           <div>
             <h2 className="text-xl font-bold">UK delivery</h2>
             <p className="mt-3 leading-7 text-gray-400">
-              We currently offer delivery within the United Kingdom.
-              Delivery charges are shown in our secure checkout
-              before you pay.
+              We currently offer free standard delivery within
+              the United Kingdom. Your delivery charge will be
+              shown at checkout before you pay.
             </p>
           </div>
 
           <div>
             <h2 className="text-xl font-bold">Delivery charges</h2>
+
             <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
-              <div className="flex justify-between gap-4 border-b border-white/10 p-4">
-                <span className="text-gray-300">1 hoodie</span>
-                <span className="font-semibold">£6.99</span>
-              </div>
               <div className="flex justify-between gap-4 p-4">
-                <span className="text-gray-300">2 hoodies</span>
-                <span className="font-semibold">£10.99</span>
+                <span className="text-gray-300">
+                  All UK orders
+                </span>
+                <span className="font-semibold">FREE</span>
               </div>
             </div>
 
             <p className="mt-3 leading-7 text-gray-400">
-              Orders of 3 or more hoodies require a delivery quote.
-              Please contact ASCENDLAB before placing your order.
-              We will confirm the delivery cost with you before
-              arranging payment.
+              Free standard UK delivery is currently available
+              on orders placed through our website. Please
+              check the final total at checkout before paying.
+            </p>
+
+            <p className="mt-3 leading-7 text-gray-400">
+              Orders of 3 or more hoodies may require a delivery
+              quote. Please contact ASCENDLAB before placing
+              a larger order so we can confirm the delivery
+              arrangements.
             </p>
           </div>
 
@@ -61,10 +66,10 @@ export default function ShippingPage() {
             <h2 className="text-xl font-bold">Delivery times</h2>
             <p className="mt-3 leading-7 text-gray-400">
               We use a tracked courier service for standard UK
-              deliveries. Delivery estimates depend on the service
-              selected and when your parcel is dispatched.
-              Courier estimates are not guaranteed delivery dates.
-              We will provide any available tracking information
+              deliveries. Our current estimated delivery time
+              is 2–5 business days after dispatch. Delivery
+              estimates are not guaranteed delivery dates.
+              We will provide available tracking information
               once your order has been dispatched.
             </p>
           </div>
@@ -73,26 +78,29 @@ export default function ShippingPage() {
             <h2 className="text-xl font-bold">Delivery addresses</h2>
             <p className="mt-3 leading-7 text-gray-400">
               Please enter a complete and accurate UK delivery
-              address at checkout. Incorrect or incomplete details
-              may delay delivery.
+              address at checkout. Incorrect or incomplete
+              details may delay delivery.
             </p>
           </div>
 
           <div>
-            <h2 className="text-xl font-bold">Missing or damaged parcels</h2>
+            <h2 className="text-xl font-bold">
+              Missing or damaged parcels
+            </h2>
             <p className="mt-3 leading-7 text-gray-400">
-              If your parcel has not arrived or your order arrives
-              damaged, please contact us with your order details.
-              We will investigate and help resolve the issue in
-              accordance with your legal rights.
+              If your parcel has not arrived or your order
+              arrives damaged, please contact us with your
+              order details. We will investigate and help
+              resolve the issue in accordance with your
+              legal rights.
             </p>
           </div>
 
           <div>
             <h2 className="text-xl font-bold">Contact us</h2>
             <p className="mt-3 leading-7 text-gray-400">
-              For delivery questions or a quote for a larger order,
-              please contact our team.
+              For delivery questions or a quote for a larger
+              order, please contact our team.
             </p>
             <Link
               href="/contact"
